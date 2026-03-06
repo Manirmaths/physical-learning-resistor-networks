@@ -18,7 +18,7 @@ from src.train import evaluate_task, predict_task_outputs, train_on_task
 
 def main() -> None:
     # -----------------------------
-    # 1. Fixed Day 1 experiment setup
+    # 1. Fixed Baseline 1 experiment setup
     # -----------------------------
     network = generate_connected_random_network(
         num_nodes=40,
@@ -113,7 +113,7 @@ def main() -> None:
     # 5. Save numerical results
     # -----------------------------
     os.makedirs("results", exist_ok=True)
-    results_path = os.path.join("results", "day1_baseline_results.csv")
+    results_path = os.path.join("results", "baseline1_results.csv")
 
     with open(results_path, "w", newline="") as f:
         writer = csv.writer(f)
@@ -132,7 +132,7 @@ def main() -> None:
     # 6. Save training curve plot
     # -----------------------------
     os.makedirs("plots", exist_ok=True)
-    plot_path = os.path.join("plots", "day1_training_curves.png")
+    plot_path = os.path.join("plots", "baseline1_training_curves.png")
 
     plt.figure(figsize=(8, 5))
     plt.plot(loss_history_a, label="Train on Task A")
@@ -143,7 +143,7 @@ def main() -> None:
     )
     plt.xlabel("Training step")
     plt.ylabel("Loss")
-    plt.title("Day 1 baseline: sequential training")
+    plt.title("Baseline 1: sequential training")
     plt.legend()
     plt.tight_layout()
     plt.savefig(plot_path, dpi=200)
