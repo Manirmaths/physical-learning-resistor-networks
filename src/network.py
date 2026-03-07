@@ -5,7 +5,7 @@ from typing import Tuple
 
 import jax.numpy as jnp
 import networkx as nx
-
+import numpy as np
 
 @dataclass
 class ResistorNetwork:
@@ -23,12 +23,18 @@ def generate_connected_random_network(
     input_nodes: Tuple[int, int] = (0, 1),
     output_node: int = 39,
 ) -> ResistorNetwork:
-    rng_seed = seed
+    import numpy as np
+
+    # Create one RNG stream tied to the requested seed
+    rng = np.random.default_rng(seed)
+
     while True:
-        graph = nx.erdos_renyi_graph(n=num_nodes, p=edge_prob, seed=rng_seed)
+        # Draw an internal seed from this RNG stream
+        graph_seed = int(rng.integers(0, 2**32 - 1))
+        graph = nx.erdos_renyi_graph(n=num_nodes, p=edge_prob, seed=graph_seed)
+
         if nx.is_connected(graph):
             break
-        rng_seed += 1
 
     edges = sorted((min(u, v), max(u, v)) for u, v in graph.edges())
     edge_i = jnp.array([e[0] for e in edges], dtype=jnp.int32)
