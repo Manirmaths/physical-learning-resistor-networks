@@ -141,3 +141,61 @@ def gradient_overlap(
     norm2 = jnp.linalg.norm(grad2)
     value = dot / (norm1 * norm2 + eps)
     return float(value)
+    
+def estimate_fisher_diagonal(
+    theta: jnp.ndarray,
+    network: ResistorNetwork,
+    task: Task,
+) -> jnp.ndarray:
+    """Estimate a simple diagonal Fisher / importance score for each parameter.
+
+    Here we use the squared gradient of the task loss at theta as a practical
+    importance proxy.
+    """
+    grads = jax.grad(lambda th: task_loss(th, network, task))(theta)
+    return grads ** 2
+
+
+def ewc_task_loss(
+    theta: jnp.ndarray,
+    theta_anchor: jnp.ndarray,
+    fisher_diag: jnp.ndarray,
+    network: ResistorNetwork,
+    task: Task,
+    lambda_reg: float,
+) -> jnp.ndarray:
+    """Task loss plus EWC-style importance-weighted quadratic penalty."""
+    base_loss = task_loss(theta, network, task)
+    penalty = jnp.mean(fisher_diag * (theta - theta_anchor) ** 2)
+    return base_loss + lambda_reg * penalty
+
+
+def train_on_task_with_ewc(
+    theta_init: jnp.ndarray,
+    theta_anchor: jnp.ndarray,
+    fisher_diag: jnp.ndarray,
+    network: ResistorNetwork,
+    task: Task,
+    lambda_reg: float = 1.0,
+    learning_rate: float = 0.1,
+    num_steps: int = 300,
+) -> Tuple[jnp.ndarray, List[float]]:
+    """Train on a task with EWC-style importance-weighted anchoring."""
+    theta = theta_init
+    loss_history: List[float] = []
+
+    loss_fn = lambda th: ewc_task_loss(
+        th, theta_anchor, fisher_diag, network, task, lambda_reg
+    )
+    grad_fn = jax.grad(loss_fn)
+
+    for step in range(num_steps):
+        loss_value = loss_fn(theta)
+        grads = grad_fn(theta)
+        theta = theta - learning_rate * grads
+        loss_history.append(float(loss_value))
+
+        if step % 20 == 0:
+            print(f"step={step}, ewc_loss={float(loss_value):.6f}")
+
+    return theta, loss_history
