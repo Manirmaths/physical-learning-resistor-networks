@@ -119,3 +119,25 @@ def train_on_task_with_anchor(
             print(f"step={step}, regularized_loss={float(loss_value):.6f}")
 
     return theta, loss_history
+
+def task_gradient(
+    theta: jnp.ndarray,
+    network: ResistorNetwork,
+    task: Task,
+) -> jnp.ndarray:
+    """Return gradient of task loss with respect to theta."""
+    loss_fn = lambda th: task_loss(th, network, task)
+    return jax.grad(loss_fn)(theta)
+
+
+def gradient_overlap(
+    grad1: jnp.ndarray,
+    grad2: jnp.ndarray,
+    eps: float = 1e-12,
+) -> float:
+    """Cosine similarity between two gradients."""
+    dot = jnp.dot(grad1, grad2)
+    norm1 = jnp.linalg.norm(grad1)
+    norm2 = jnp.linalg.norm(grad2)
+    value = dot / (norm1 * norm2 + eps)
+    return float(value)
