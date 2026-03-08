@@ -1,0 +1,15 @@
+name: resistor-networks
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - pip
+  - numpy
+  - scipy
+  - matplotlib
+  - networkx
+  - pandas
+  - pip:
+      - jax
+      - jaxlib
+      - optax

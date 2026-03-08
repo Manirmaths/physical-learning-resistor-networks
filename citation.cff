@@ -1,0 +1,11 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "Physical Learning in Resistor Networks"
+type: software
+authors:
+  - family-names: "Ibrahim"
+    given-names: "Maniru"
+    orcid: "https://orcid.org/0000-0002-9644-1921"
+version: 1.0.0
+date-released: 2026-03-08
+url: "https://github.com/Manirmaths/physical-learning-resistor-networks"
