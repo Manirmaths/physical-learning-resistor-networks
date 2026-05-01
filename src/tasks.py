@@ -28,3 +28,14 @@ def get_task_b() -> Task:
         ((1.0, 0.0), 0.0),
         ((0.0, 1.0), 1.0),
     ]
+
+def get_task_b_alpha(alpha: float) -> Task:
+    """Interpolating Task B_alpha.
+
+    alpha = 1 gives Task A.
+    alpha = 0 gives the reversed Task B.
+    """
+    return [
+        ((1.0, 0.0), float(alpha)),
+        ((0.0, 1.0), float(1.0 - alpha)),
+    ]

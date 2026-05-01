@@ -1,5 +1,5 @@
 # Physical Learning in Resistor Networks
-
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18909778.svg)](https://doi.org/10.5281/zenodo.18909778)
 Code accompanying the manuscript **“Sequential Learning and Catastrophic Forgetting in Differentiable Resistor Networks.”**
 
 This repository studies sequential learning and catastrophic forgetting in differentiable resistor networks. The model treats an electrical network as a weighted graph with trainable edge conductances. For fixed boundary voltages, the network state is obtained by solving a linear system based on the weighted graph Laplacian. Learning adjusts conductances so that the output node matches a desired target.
@@ -56,6 +56,12 @@ network-size effects
 ## Reproducibility
 
 For reproducibility, fixed random seeds should be used where applicable, and the archived release corresponding to the manuscript submission should be cited.
+
+## Citation
+
+If you use this repository, please cite the archived release:
+
+Maniru Ibrahim, *Physical Learning in Resistor Networks*, Zenodo, https://doi.org/10.5281/zenodo.18909778
 
 ## License
 
