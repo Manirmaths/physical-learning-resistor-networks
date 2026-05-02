@@ -125,10 +125,10 @@ def summarise(df: pd.DataFrame) -> pd.DataFrame:
 def main() -> None:
     os.makedirs("results", exist_ok=True)
 
-    # Cheap but defensible final setting.
+    # 
     seeds = range(5)
-    sizes = [40, 80, 160]
-    budgets = [300, 1000]
+    sizes = [40, 80, 160,320]
+    budgets = [300, 1000,3000]
 
     rows = []
 
